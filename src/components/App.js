@@ -28,9 +28,6 @@ class App extends Component {
     const { posts } = this.props
     return (
       <div>
-        <nav>
-          <button>ADD POST</button>
-        </nav>
         <h3>Categories</h3>
         <Categories cats={this.props.cats}></Categories>
         <h3>Posts</h3>

@@ -8,8 +8,6 @@ import 'bootstrap/dist/css/bootstrap.css'
 import { Provider } from 'react-redux'
 import { createStore,  applyMiddleware, compose } from 'redux'
 import reducer from './reducers'
-// fetchposts is asynchronous call, gets all posts
-import { fetchPosts } from './actions/posts'
 import thunk from 'redux-thunk'
 
 // allows us to use redux tools and the thunk
