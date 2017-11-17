@@ -1,17 +1,17 @@
-import React, { component } from 'react'
+import React, { Component } from 'react'
 
-class Post extends component {
+class Post extends Component {
   render() {
+    const { post } = this.props
     return (
       <div>
         <ul>
-          {
-            this.props.posts.map()
-          }
+           {
+            Object.entries(post).map((keyval)=> <li>{`${keyval[0]}:${keyval[1]}`}</li>)
+           }
         </ul>
       </div>
     )
-
   }
 }
 

@@ -23,6 +23,5 @@ const store = createStore(reducer, composeEnhancers(
 // byt the user
 // note i had to invoke fetchposts action when passing it to store.dispatch, this way the second
 // function would be returned
-store.dispatch(fetchPosts())
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
