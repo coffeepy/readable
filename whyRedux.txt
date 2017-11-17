@@ -1,0 +1,16 @@
+This is for my own explanation.
+
+We do have the backend server, so why redux?
+
+Well remember the App has the state, that state will be what is given by the backend
+You will load the entire frontend etc.. based on the state.
+
+State gets harder to get access to unless we have a centralized store.
+
+You want to implement redux asap, so we use that as our single source.
+
+We will also want to use middleware to catch the actions before they update the store,
+so it will update the backend first!, if we update the backend first, i dont see a reason to update the
+store, unless we update the store and dont update the backend unless there's a refresh, adding caching
+ability....kinda like that...but will that be possible. Will state only be set when the App is loaded the
+first time, is that really possible...hmmmmmmm
