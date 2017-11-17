@@ -1,5 +1,5 @@
 // import { getAllPosts } from '../backendAPI'
-import { RECIEVE_POSTS } from '../actions'
+import { RECIEVE_POSTS } from '../actions/posts'
 import { combineReducers } from 'redux'
 
 const postReducer = (state={}, action)=> {
