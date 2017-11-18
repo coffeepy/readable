@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
+import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import '../App.css';
-import Categories from './categories'
-import { getAllCats, getAllPosts } from '../backendAPI'
+/// component imports
+import Categories from './Categories'
+import Post from './Post'
+import Nav from './Nav'
+import CategoryView from './CategoryView'
+
 // fetchposts/fetchCats are asynchronous calls, gets all posts from backend
 import { fetchPosts } from '../actions/posts'
 import { fetchCats } from '../actions/categories'
+import { getAllCats, getAllPosts } from '../backendAPI'
 // import { fetchPosts } from '../actions'
-import { connect } from 'react-redux'
 // import our Post component
-import Post from './post'
 
 // just for testing, delete later
 window.getAllPosts = getAllPosts
@@ -25,21 +30,43 @@ class App extends Component {
   }
 
   render() {
-    const { posts } = this.props
+    const { posts, cats} = this.props
     return (
       <div>
-        <h3>Categories</h3>
-        <Categories cats={this.props.cats}></Categories>
-        <h3>Posts</h3>
+        <Nav/>
+        <Route exact={true} path="/" render={()=> {
+          return(
+            <div>
+              <h3>Categories</h3>
+              <Categories cats={cats}/>
+              <h3>Posts</h3>
+              {
+                posts.map((post)=> <Post post={post}></Post>)
+              }
+            </div>
+          )
+        }}/>
+        {/*  Below we create a Route for every possible cat */}
         {
-          posts.map((post)=> <Post post={post}></Post>)
+          cats.map((cat)=> <Route path={`/${cat.path}`} component={CategoryView}/>)
         }
-
-        {/* <Posts post={this.state.posts}></Posts> */}
       </div>
     );
   }
 }
+// class test_del extends Component {
+//   render() {
+//   console.log(this.props);
+//     return (
+//       {
+//
+//       }
+//       <div>WORKS</div>
+//     )
+//   }
+//
+// }
+
 const mapStateToProps = (state) => {
   console.log('state', state);
   return {
@@ -54,4 +81,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

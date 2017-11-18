@@ -2,11 +2,11 @@
 import { RECIEVE_POSTS } from '../actions/posts'
 import { RECEIVE_CATS } from '../actions/categories'
 import { combineReducers } from 'redux'
-let initState = {
-  categories: [],
-  posts: [],
-  comments: [],
-}
+// let initState = {
+//   categories: [],
+//   posts: [],
+//   comments: [],
+// }
 const postReducer = (state=[], action)=> {
   switch (action.type) {
     case RECIEVE_POSTS:
@@ -37,6 +37,7 @@ const catReducer = (state=[], action)=> {
 //   }
 // }
 export default combineReducers({
+  selectedCategory: null,
   posts: postReducer,
   categories: catReducer,
 })

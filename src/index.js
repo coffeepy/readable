@@ -1,14 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+// css imports
 import './index.css';
-import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css'
-
+//local file imports
+import App from './components/App';
+import reducer from './reducers'
+import registerServiceWorker from './registerServiceWorker';
+// library imports
 import { Provider } from 'react-redux'
 import { createStore,  applyMiddleware, compose } from 'redux'
-import reducer from './reducers'
 import thunk from 'redux-thunk'
+import { BrowserRouter } from 'react-router-dom'
 
 // allows us to use redux tools and the thunk
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -21,5 +24,7 @@ const store = createStore(reducer, composeEnhancers(
 // byt the user
 // note i had to invoke fetchposts action when passing it to store.dispatch, this way the second
 // function would be returned
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}><BrowserRouter><App /></BrowserRouter></Provider>
+  , document.getElementById('root'));
 registerServiceWorker();
