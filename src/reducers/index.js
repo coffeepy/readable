@@ -1,6 +1,7 @@
 // import { getAllPosts } from '../backendAPI'
 import { RECIEVE_POSTS } from '../actions/posts'
 import { RECEIVE_CATS } from '../actions/categories'
+
 import { combineReducers } from 'redux'
 // let initState = {
 //   categories: [],
@@ -25,13 +26,13 @@ const catReducer = (state=[], action)=> {
       return state
   }
 }
-// commentsReducer = (state={}, action)=> {
-//   switch (expression) {
-//     case expression:
-//
-//       break;
+
+// const commentsReducer = (state=[], action)=> {
+//   switch (action.type) {
+//     case RECEIVE_COMMENTS:
+//       return action.comments
 //     default:
-//
+//       return state
 //   }
 // }
 export default combineReducers({

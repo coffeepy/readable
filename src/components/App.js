@@ -8,7 +8,8 @@ import Categories from './Categories'
 import Post from './Post'
 import Nav from './Nav'
 import CategoryView from './CategoryView'
-import PostForm from './PostForm'
+import NewPostForm from './NewPostForm'
+import EditPostForm from './EditPostForm'
 
 // fetchposts/fetchCats are asynchronous calls, gets all posts from backend
 import { fetchPosts } from '../actions/posts'
@@ -47,7 +48,8 @@ class App extends Component {
             </div>
           )
         }}/>
-        <Route path="/new" component={PostForm}/>
+        <Route path="/new" component={NewPostForm}/>
+        <Route path="/edit/:id" component={EditPostForm}/>
         {/*  Below we create a Route for every possible cat */}
         {
           cats.map((cat)=> <Route key={cat.path} path={`/${cat.path}`} render={()=> <CategoryView selectedCat={cat.name}/>}/>)

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import Comment from './Comment'
 
 class Post extends Component {
@@ -21,6 +22,7 @@ class Post extends Component {
             Object.entries(post).map((keyval)=> <li key={keyval[0]}>{`${keyval[0]}:${keyval[1]}`}</li>)
            }
         </ul>
+        <Link to={`/edit/${post.id}`}>Edit Post</Link>
         <button onClick={this.toggleShowCommentForm}>Add Comment</button>
         { this.state.showCommentForm &&
           <Comment postId={post.id}/>

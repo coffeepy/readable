@@ -14,7 +14,7 @@ const postHeaders = {
     headers,
     method: "post",
 }
-// meow!
+// meow! Categories
 export const getAllCats = () => {
   return fetch(`${api}/categories`, { headers })
     .then((res)=> res.json())
@@ -22,6 +22,11 @@ export const getAllCats = () => {
 // posts
 export const getAllPosts = () => {
   return fetch(`${api}/posts`, { headers })
+    .then((res)=> res.json())
+}
+
+export const getPost = (id) => {
+  return fetch(`${api}/posts/${id}`, { headers })
     .then((res)=> res.json())
 }
 
@@ -34,6 +39,7 @@ export const postPost = (data) => {
   return fetch(`${api}/posts`, { ...headers_ })
     .then((res)=> res.json())
 }
+// comments
 export const getAllComments = () => {
   return fetch(`${api}/posts`, { headers })
     .then((res)=> res.json())
