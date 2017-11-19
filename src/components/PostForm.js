@@ -31,7 +31,7 @@ class PostForm extends Component {
     const { categories, handleSubmit, id} = this.props
     const { title, body, author, category } = this.state
     return (
-        <Form onSubmit={handleSubmit.bind(this)}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="title">Title</Label>
             <Input name="title" value={title} onChange={this.onChangeHandler}/>
