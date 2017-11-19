@@ -1,6 +1,6 @@
 // import { getAllPosts } from '../backendAPI'
 import { RECIEVE_POSTS } from '../actions/posts'
-import { RECEIVE_CATS, SELECT_CAT } from '../actions/categories'
+import { RECEIVE_CATS } from '../actions/categories'
 import { combineReducers } from 'redux'
 // let initState = {
 //   categories: [],
@@ -25,15 +25,6 @@ const catReducer = (state=[], action)=> {
       return state
   }
 }
-// const selectedCatReducer = (state=null, action) => {
-//   switch (action.type) {
-//     case SELECT_CAT:
-//       return action.category
-//     default:
-//       return state
-//   }
-// }
-//
 // commentsReducer = (state={}, action)=> {
 //   switch (expression) {
 //     case expression:
