@@ -14,6 +14,10 @@ const postHeaders = {
     headers,
     method: "post",
 }
+const editHeaders = {
+    headers,
+    method: "put",
+}
 // meow! Categories
 export const getAllCats = () => {
   return fetch(`${api}/categories`, { headers })
@@ -30,6 +34,15 @@ export const getPost = (id) => {
     .then((res)=> res.json())
 }
 
+export const editPost = (id, data) => {
+  const headers_ = {
+    ...editHeaders,
+    body: JSON.stringify(data)
+  }
+  console.log(id, data);
+  return fetch(`${api}/posts/${id}`, { ...headers_ })
+    .then((res)=> res.json())
+}
 export const postPost = (data) => {
   // i heard you like posts
   const headers_ = {

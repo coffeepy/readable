@@ -1,32 +1,30 @@
 import React, { Component } from 'react'
 import { Container } from 'reactstrap'
 import { connect } from 'react-redux'
-import { serializeForm_with_timestamp_and_id } from '../utils/helpers'
+import { serialize_form } from '../utils/helpers'
+import { editPost } from '../backendAPI'
 import PostForm from './PostForm'
 
 class EditPostForm extends Component {
+  handleSubmit(e) {
+    e.preventDefault()
+    let obj = serialize_form(e)
+    console.log(obj);
+    editPost(this.props.id, obj)
+  }
   render() {
-    const { handleSubmit, match, posts } = this.props
+    const { match, posts } = this.props
     return (
       <Container>
         <PostForm
           id={match.params.id}
-          handleSubmit={handleSubmit}
+          handleSubmit={this.handleSubmit}
         />
       </Container>
     )
   }
 }
 
-const mapDispatchToProps = (dispatch)=> {
-  return {
-    handleSubmit: (e) => {
-      let obj = serializeForm_with_timestamp_and_id(e)
-      return
-      // return dispatch(addPost(obj))
-    }
-  }
-}
 
 const mapStateToProps = (state)=> {
   return {
@@ -34,4 +32,4 @@ const mapStateToProps = (state)=> {
   }
 }
 
-export default connect(mapStateToProps , mapDispatchToProps)(EditPostForm)
+export default connect(mapStateToProps)(EditPostForm)

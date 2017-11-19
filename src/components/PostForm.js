@@ -31,7 +31,7 @@ class PostForm extends Component {
     const { categories, handleSubmit, id} = this.props
     const { title, body, author, category } = this.state
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit.bind(this)}>
           <FormGroup>
             <Label for="title">Title</Label>
             <Input name="title" value={title} onChange={this.onChangeHandler}/>
@@ -42,12 +42,17 @@ class PostForm extends Component {
           </FormGroup>
           <FormGroup>
             <Label for="author" >Author</Label>
-            <Input name="author" value={author} onChange={this.onChangeHandler}/>
+            {
+              id ?
+                <div>{author}</div>
+              : <Input name="author" value={author} onChange={this.onChangeHandler}/>
+            }
+
           </FormGroup>
           <FormGroup>
             <Label for="category">Category</Label>
             {
-              category
+              id
                 ? <div>{category}</div>
 
                 : <Input type="select" name="category">
