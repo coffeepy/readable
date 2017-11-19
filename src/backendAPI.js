@@ -6,18 +6,44 @@ let token = localStorage.token
 
 const headers = {
   Authorization: token,
-  Accept: "application/json"
+  Accept: "application/json",
+  'Content-Type': 'application/json'
+}
+
+const postHeaders = {
+    headers,
+    method: "post",
 }
 // meow!
 export const getAllCats = () => {
   return fetch(`${api}/categories`, { headers })
     .then((res)=> res.json())
 }
+// posts
 export const getAllPosts = () => {
   return fetch(`${api}/posts`, { headers })
     .then((res)=> res.json())
 }
+
+export const postPost = (data) => {
+  // i heard you like posts
+  const headers_ = {
+    ...postHeaders,
+    body: JSON.stringify(data)
+  }
+  return fetch(`${api}/posts`, { ...headers_ })
+    .then((res)=> res.json())
+}
 export const getAllComments = () => {
   return fetch(`${api}/posts`, { headers })
+    .then((res)=> res.json())
+}
+
+export const postComment = (data) => {
+  const headers_ = {
+    ...postHeaders,
+    body: JSON.stringify(data)
+  }
+  return fetch(`${api}/comments`, { ...headers_ })
     .then((res)=> res.json())
 }

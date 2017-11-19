@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import serializeForm from 'form-serialize'
-import uniqid from 'uniqid'
+import { connect } from 'react-redux'
+import { postPost } from '../backendAPI'
+import { addPost } from '../actions/posts'
+import { serializeForm_with_timestamp_and_id } from '../utils/helpers'
+
 class PostForm extends Component {
-  handleSubmit = (e)=> {
-    e.preventDefault()
-    let obj = serializeForm(e.target, { hash: true })
-    obj.date = Date.now()
-    obj.id =  uniqid("post-")
-    console.log(obj);
-  }
+  // handleSubmit = (e)=> {
+  //   let obj = serializeForm_with_timestamp_and_id(e)
+  //   // console.log(obj);
+  //   postPost(obj)
+  // }
 
   render() {
+    const { categories, handleSubmit } = this.props
     return (
       <Container>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="title">Title</Label>
             <Input name="title"/>
@@ -27,11 +30,33 @@ class PostForm extends Component {
             <Label for="author">Author</Label>
             <Input name="author"/>
           </FormGroup>
+          <FormGroup>
+            <Label for="category">Category</Label>
+            <Input type="select" name="category">
+              {
+                categories.map((cat)=> <option key={cat.name}>{cat.name}</option>)
+
+              }
+            </Input>
+          </FormGroup>
           <Button type="submit">Submit Post!</Button>
         </Form>
       </Container>
     )
   }
 }
+const mapStateToProps = (state)=> {
+  return {
+    categories: state.categories
+  }
+}
 
-export default PostForm
+const mapDispatchToProps = (dispatch)=> {
+  return {
+    handleSubmit: (e) => {
+      let obj = serializeForm_with_timestamp_and_id(e)
+      return dispatch(addPost(obj))
+    }
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PostForm)

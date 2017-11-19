@@ -42,7 +42,7 @@ class App extends Component {
               <Categories cats={cats}/>
               <h3>Posts</h3>
               {
-                posts.map((post)=> <Post post={post}></Post>)
+                posts.map((post)=> <Post key={post.id} post={post}></Post>)
               }
             </div>
           )
@@ -50,7 +50,7 @@ class App extends Component {
         <Route path="/new" component={PostForm}/>
         {/*  Below we create a Route for every possible cat */}
         {
-          cats.map((cat)=> <Route path={`/${cat.path}`} component={CategoryView}/>)
+          cats.map((cat)=> <Route key={cat.path} path={`/${cat.path}`} render={()=> <CategoryView selectedCat={cat.name}/>}/>)
         }
       </div>
     );
@@ -70,7 +70,6 @@ class App extends Component {
 // }
 
 const mapStateToProps = (state) => {
-  console.log('state', state);
   return {
     posts: state.posts,
     cats: state.categories,

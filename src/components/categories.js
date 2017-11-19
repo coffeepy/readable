@@ -10,7 +10,7 @@ class Categories extends Component {
       <div>
         <ul>
           {
-            this.props.cats.map((cat)=> <li><Link to={`/${cat.path}`}>{cat.name}</Link></li>)
+            this.props.cats.map((cat)=> <li key={cat.path}><Link to={`/${cat.path}`}>{cat.name}</Link></li>)
           }
         </ul>
       </div>

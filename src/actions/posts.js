@@ -1,8 +1,7 @@
+import { getAllPosts, postPost } from '../backendAPI'
 // export const ADD_POST = "ADD_POST"
 // export const REMOVE_POST = "REMOVE_POST"
-
-import { getAllPosts } from '../backendAPI'
-export const FETCH_POSTS = "FETCH_POSTS"
+// export const FETCH_POSTS = "FETCH_POSTS"
 export const RECIEVE_POSTS = "RECIEVE_POSTS"
 
 export const recievePosts = (posts) => {
@@ -10,6 +9,14 @@ export const recievePosts = (posts) => {
     type: RECIEVE_POSTS,
     posts
   }
+}
+
+export const addPost = (post_obj) => dispatch => {
+  // thunk is used to use this action due to it being asynchronous
+  // Here i  just post the obj, then i want to fetch all posts again to update
+  // the state
+  postPost(post_obj)
+    .then( ()=>  dispatch(fetchPosts()) )
 }
 export const fetchPosts = () => dispatch => {
   // thunk is used to use this action due to it being asynchronous
