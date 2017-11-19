@@ -4,17 +4,28 @@ import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { getPost } from '../backendAPI'
 
 class PostForm extends Component {
-  state = {
-    title: "",
-    body: "",
-    author: "",
-    category: "",
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      body: "",
+      author: "",
+      category: "",
+    };
+    this.onChangeHandler = this.onChangeHandler.bind(this);
   }
   componentDidMount() {
     console.log(this.props.id);
     if (this.props.id) {
      getPost(this.props.id).then((post)=> this.setState({...post}))
     }
+  }
+  onChangeHandler(e) {
+    this.setState(
+      {
+        [e.target.name]: e.target.value
+      }
+    )
   }
   render() {
     const { categories, handleSubmit, id} = this.props
@@ -23,15 +34,15 @@ class PostForm extends Component {
         <Form onSubmit={handleSubmit}>
           <FormGroup>
             <Label for="title">Title</Label>
-            <Input name="title" value={title}/>
+            <Input name="title" value={title} onChange={this.onChangeHandler}/>
           </FormGroup>
           <FormGroup>
             <Label for="title">Body</Label>
-            <Input type="textarea" name="body" value={body} />
+            <Input type="textarea" name="body" value={body} onChange={this.onChangeHandler}/>
           </FormGroup>
           <FormGroup>
             <Label for="author" >Author</Label>
-            <Input name="author" value={author} />
+            <Input name="author" value={author} onChange={this.onChangeHandler}/>
           </FormGroup>
           <FormGroup>
             <Label for="category">Category</Label>
@@ -47,7 +58,10 @@ class PostForm extends Component {
                   </Input>
             }
           </FormGroup>
-          <Button type="submit">Post!</Button>
+          <Button type="submit">
+            {id ? "Edit " : "Submit "}
+            Post
+          </Button>
         </Form>
     )
   }
