@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import '../App.css';
 /// component imports
 import Categories from './Categories'
 import Post from './Post'
@@ -16,10 +15,6 @@ import SelectOrder from './SelectOrder'
 import { fetchPostsOrdered } from '../actions/posts'
 import { fetchCats } from '../actions/categories'
 import { getAllCats, getAllPosts } from '../backendAPI'
-// import { fetchPosts } from '../actions'
-// import our Post component
-
-// just for testing, delete later
 window.getAllPosts = getAllPosts
 
 class App extends Component {
@@ -44,13 +39,20 @@ class App extends Component {
               <Categories cats={cats}/>
               <h3>Posts</h3>
               {
-                posts.map((post)=> <Post key={post.id} post={post}></Post>)
+                posts.map((post)=> <Post key={post.id} id={post.id} fetchAllPosts={true}/>)
               }
             </div>
           )
         }}/>
         <Route path="/new" component={NewPostForm}/>
         <Route path="/edit/:id" component={EditPostForm}/>
+        {/* <Route path="/post/:id"
+          render={({ match })=> {
+            const post = posts.find((post)=> post.id === match.params.id)
+            return <Post post={post} />
+          }}
+        /> */}
+        <Route path="/post/:id" component={Post}/>
         {/*  Below we create a Route for every possible cat */}
         {
           cats.map((cat)=> <Route key={cat.path} path={`/${cat.path}`} render={()=> <CategoryView selectedCat={cat.name}/>}/>)
@@ -59,19 +61,6 @@ class App extends Component {
     );
   }
 }
-// class test_del extends Component {
-//   render() {
-//   console.log(this.props);
-//     return (
-//       {
-//
-//       }
-//       <div>WORKS</div>
-//     )
-//   }
-//
-// }
-
 const mapStateToProps = (state) => {
   return {
     posts: state.posts,

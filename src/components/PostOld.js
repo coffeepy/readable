@@ -19,92 +19,64 @@ class Post extends Component {
   }
   handleCommentSubmit = (e)=> {
     e.preventDefault()
-    // toggle the comment forms visibility, since it is visible
-    // because the button was clicked to submit this comment
-    // toggling will hide it
-    this.toggleShowCommentForm()
-    // setup object
     let obj = serializeForm_with_timestamp_and_id(e)
-    obj.parentId = this.state.post.id
-    // post the comment and then refetch the post and set the state
-    // also fetch the new comment we just added after post is fetched
-    postComment(obj)
-      .then(()=> this.fetchPostAndComments())
+    obj.parentId = this.props.post.id
+    postComment(obj).then(()=> this.fetchComments() )
+    this.props.fetchPosts(this.props.postOrder)
+    this.toggleShowCommentForm()
   }
   handleCommentEdit = (e, id)=> {
     e.preventDefault()
     let obj = serialize_form(e)
-    // we arent increasing a comment, just editing
-    // so no need to fetch the post again(So the comment count can go up)
-    // we just simply fetch the comments again
+    console.log(id);
     return editComment(id, obj).then(()=> {
-      this.fetchCommentsAndSetState()
+      this.fetchComments()
     })
   }
   deleteComment = (id)=> {
-    // since we delete a comment, we have to fetch the post since it
-    // will reflect the new comment count, and the comments as well
-    deleteComment(id)
-      .then(this.fetchPostAndComments())
-  }
-  fetchComments(id) { return getComments(id || this.state.post.id) }
-  fetchCommentsAndSetState = () => (
-    this.fetchComments().then((comments)=>
-      this.setState({comments:this.orderComments(comments)})
-    )
-  )
-
-  fetchPostAndComments = () => {
-    this.fetchPost()
-      .then((post)=>
-        this.fetchComments(post.id)
-          .then((comments)=>
-            this.setState({comments:this.orderComments(comments), post})
-          )
-      )
+    deleteComment(id).then(()=> this.fetchComments() )
+    this.props.fetchPosts(this.props.postOrder)
   }
   toggleShowCommentForm = ()=> {
-    let { showCommentForm } = this.state
-    showCommentForm = showCommentForm ? false : true
-    return this.setState( {showCommentForm} )
+    this.setState((state) => {
+      let { showCommentForm } = state
+      showCommentForm = showCommentForm ? false : true
+      return { showCommentForm }
+    })
   }
   toggleShowComments = ()=> {
     let { showComments } = this.state
     showComments = showComments ? false : true
-    return this.setState({showComments})
+    this.setState({showComments})
+    return showComments
+  }
+  toggleCommentsThenFetch = ()=> {
+    const showComments = this.toggleShowComments()
+    console.log(showComments);
+    if (showComments) {
+      this.fetchComments()
+    }
+  }
+  fetchComments() {
+    getComments(this.props.post.id)
+      .then((comments)=> {
+        this.setState({comments: this.orderComments(comments) })
+      })
   }
   orderComments = (comments)=> (orderByGreatest(comments, 'voteScore'))
 
   voteComment = (id, vote) => {
     voteComment(id, vote)
-      .then(()=> this.fetchCommentsAndSetState() )
+      .then(()=> this.fetchComments() )
   }
-  // post functions
-  votePost = (id, vote) => {
-    this.props.votePost(id, vote)
-      .then(()=>
-        this.fetchPostAndSetState()
-        // .then(setTimeout(this.fetchAllPosts))
-    )
-  }
-  fetchPost = ()=> {
-    const id = this.props.id || this.props.match.params.id
-    return getPost(id)
-  }
-  fetchPostAndSetState() {
-    return this.fetchPost().then((post)=> this.setState({post}))
-  }
-  fetchAllPosts = () => {
-    this.props.fetchPosts(this.props.postOrder)
+  checkforPostObj = ()=> {
+    return null
+
   }
   componentDidMount() {
-    console.log('component did mount');
-    this.fetchPostAndComments()
   }
   render() {
-    console.log(this.state);
-    const { showComments } = this.props
-    const { post } = this.state
+    let { post, showComments } = this.props
     return (
       <div>
         <ul>
@@ -116,9 +88,9 @@ class Post extends Component {
         <Link to={`/post/${post.id}`}>View Post</Link>
         <button onClick={()=> this.props.dispatch(deletePostAction(post.id))}>Delete Post</button>
         <button onClick={this.toggleShowCommentForm}>Add Comment</button>
-        <button onClick={()=> this.votePost(post.id, 'upVote')}>Up Vote</button>
-        <button onClick={()=> this.votePost(post.id, 'downVote')}>Down Vote</button>
-        <button onClick={this.toggleShowComments}>Show Comments</button>
+        <button onClick={()=> this.props.votePost(post.id, 'upVote')}>Up Vote</button>
+        <button onClick={()=> this.props.votePost(post.id, 'downVote')}>Down Vote</button>
+        <button onClick={this.toggleCommentsThenFetch}>Show Comments</button>
         { this.state.showCommentForm &&
           <CommentForm handleSubmit={this.handleCommentSubmit}/>
         }
