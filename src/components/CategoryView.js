@@ -12,7 +12,11 @@ class CategoryView extends Component {
       <div>
         <h2>Category View</h2>
         {
-          <Post post={posts.find((post)=> post.category === selectedCat )}/>
+          posts.map((post)=>{
+            return post.category === selectedCat ? <Post post={post}/>
+              : <div>No Posts in this Category</div>
+          })
+
         }
       </div>
 

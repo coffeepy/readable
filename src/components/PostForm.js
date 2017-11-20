@@ -15,7 +15,6 @@ class PostForm extends Component {
     this.onChangeHandler = this.onChangeHandler.bind(this);
   }
   componentDidMount() {
-    console.log(this.props.id);
     if (this.props.id) {
      getPost(this.props.id).then((post)=> this.setState({...post}))
     }

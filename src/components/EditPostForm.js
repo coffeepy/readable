@@ -6,12 +6,6 @@ import { editPostAction } from  '../actions/posts'
 import PostForm from './PostForm'
 
 class EditPostForm extends Component {
-  // handleSubmit(e) {
-  //   e.preventDefault()
-  //   let obj = serialize_form(e)
-  //   console.log(obj);
-  //   editPost(this.props.id, obj)
-  // }
   render() {
     const { match, posts, editPostHandler } = this.props
     return (

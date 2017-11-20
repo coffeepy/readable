@@ -1,28 +1,38 @@
 import React, { Component } from 'react'
-import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
-import {serializeForm_with_timestamp_and_id} from '../utils/helpers'
-import { postComment } from '../backendAPI'
+import CommentForm from './CommentForm'
 
 class Comment extends Component {
-  handleSubmit = (e, parentId)=> {
-    e.preventDefault()
-    let obj = serializeForm_with_timestamp_and_id(e)
-    obj.parentId = parentId
-    postComment(obj).then((data)=>console.log('success', data))
-    return
+  state = {
+    edit: false
+  }
+  // handleCommentEdit = (e)=> {
+  //   e.preventDefault()
+  //   let obj = serialize_form(e)
+  //   editComment(this.props.comment.id, obj).then(()=> this.setState({edit: false}) )
+  // }
+  handleSubmit = (e, id) => {
+    this.props.handleSubmit(e, id).then(()=> this.setState({edit:false}))
   }
   render() {
-    return (
-      <Form onSubmit={(e)=> this.handleSubmit(e, this.props.postId)}>
-        <FormGroup>
-          <Input type='textarea' name='body'/>
-        </FormGroup>
-        <FormGroup>
-          <Label for="author">Author</Label>
-          <Input name='author'/>
-        </FormGroup>
-        <Button type='submit'>Submit Comment</Button>
-      </Form>
+    const { del, comment, handleSubmit} = this.props
+    const { edit } = this.state
+    return(
+      <div>
+        {
+          edit
+            ? <CommentForm id={comment.id} handleSubmit={this.handleSubmit}/>
+            : <div>
+                <div>
+                  {comment.body}
+                </div>
+                <div>
+                  {comment.author}
+                </div>
+              </div>
+        }
+        <button onClick={()=>{this.setState({edit: true})}}>Edit</button>
+        <button onClick={()=> del(comment.id)} >Delete</button>
+      </div>
     )
   }
 }

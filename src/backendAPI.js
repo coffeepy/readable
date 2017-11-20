@@ -18,6 +18,10 @@ const editHeaders = {
     headers,
     method: "put",
 }
+const deleteHeaders = {
+    headers,
+    method: "delete",
+}
 // meow! Categories
 export const getAllCats = () => {
   return fetch(`${api}/categories`, { headers })
@@ -39,7 +43,6 @@ export const editPost = (id, data) => {
     ...editHeaders,
     body: JSON.stringify(data)
   }
-  console.log(id, data);
   return fetch(`${api}/posts/${id}`, { ...headers_ })
     .then((res)=> res.json())
 }
@@ -52,17 +55,44 @@ export const postPost = (data) => {
   return fetch(`${api}/posts`, { ...headers_ })
     .then((res)=> res.json())
 }
-// comments
-export const getAllComments = () => {
-  return fetch(`${api}/posts`, { headers })
+export const deletePost = (id) => {
+  return fetch(`${api}/posts/${id}`, { ...deleteHeaders })
     .then((res)=> res.json())
 }
-
+export const votePost = (id, data) => {
+  const headers_ = {
+    ...postHeaders,
+    body: JSON.stringify(data)
+  }
+  return fetch(`${api}/posts/${id}`, { ...headers_ })
+    .then((res)=> res.json())
+}
+// comments
+export const getComments = (id) => {
+  return fetch(`${api}/posts/${id}/comments`, { headers })
+    .then((res)=> res.json())
+}
+export const getComment = (id) => {
+  return fetch(`${api}/comments/${id}/`, { headers })
+    .then((res)=> res.json())
+}
 export const postComment = (data) => {
   const headers_ = {
     ...postHeaders,
     body: JSON.stringify(data)
   }
   return fetch(`${api}/comments`, { ...headers_ })
+    .then((res)=> res.json())
+}
+export const editComment = (id, data) => {
+  const headers_ = {
+    ...editHeaders,
+    body: JSON.stringify(data)
+  }
+  return fetch(`${api}/comments/${id}`, { ...headers_ })
+    .then((res)=> res.json())
+}
+export const deleteComment = (id) => {
+  return fetch(`${api}/comments/${id}`, { ...deleteHeaders })
     .then((res)=> res.json())
 }
