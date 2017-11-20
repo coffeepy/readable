@@ -30,16 +30,16 @@ class App extends Component {
     let { posts, cats } = this.props
     return (
       <div>
-        <Nav/>
-        <SelectOrder />
         <Route exact={true} path="/" render={()=> {
           return(
             <div>
+              <Nav />
+              <SelectOrder />
               <h3>Categories</h3>
               <Categories cats={cats}/>
               <h3>Posts</h3>
               {
-                posts.map((post)=> <Post key={post.id} id={post.id} fetchAllPosts={true}/>)
+                posts.map((post)=> <Post key={post.id} id={post.id} fetchPosts={true}/>)
               }
             </div>
           )

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+  import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchPostsOrdered, changePostOrder  } from '../actions/posts'
 
@@ -6,7 +6,6 @@ class SelectOrder extends Component {
   render() {
     const { postOrder, changePostOrder } = this.props
     const onChange = (e)=> {
-      console.log(e.target.value);
       this.props.changePostOrder(e)
       this.props.fetchPostOrdered(e)
     }

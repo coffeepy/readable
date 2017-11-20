@@ -5,7 +5,7 @@ import CommentForm from './CommentForm'
 import Comment from './Comment'
 import { fetchPostsOrdered, deletePostAction, votePostAction } from '../actions/posts'
 import {serializeForm_with_timestamp_and_id} from '../utils/helpers'
-import { getComments, getPost, postComment, editComment, deleteComment, voteComment } from '../backendAPI'
+import { getComments, getPost, votePost, postComment, editComment, deleteComment, voteComment } from '../backendAPI'
 import { serialize_form, orderByGreatest } from '../utils/helpers'
 
 
@@ -55,7 +55,7 @@ class Post extends Component {
   )
 
   fetchPostAndComments = () => {
-    this.fetchPost()
+    return this.fetchPost()
       .then((post)=>
         this.fetchComments(post.id)
           .then((comments)=>
@@ -80,11 +80,11 @@ class Post extends Component {
       .then(()=> this.fetchCommentsAndSetState() )
   }
   // post functions
-  votePost = (id, vote) => {
-    this.props.votePost(id, vote)
+  votePost = (id, option) => {
+    votePost(id, {option})
       .then(()=>
         this.fetchPostAndSetState()
-        // .then(setTimeout(this.fetchAllPosts))
+        .then(this.checkIfFetchAll)
     )
   }
   fetchPost = ()=> {
@@ -95,15 +95,20 @@ class Post extends Component {
     return this.fetchPost().then((post)=> this.setState({post}))
   }
   fetchAllPosts = () => {
-    this.props.fetchPosts(this.props.postOrder)
+    this.props.dispatch(fetchPostsOrdered(this.props.postOrder))
   }
+  checkIfFetchAll = () =>  (
+    this.props.fetchPosts
+    ? this.fetchAllPosts()
+    : null
+  )
+
   componentDidMount() {
-    console.log('component did mount');
     this.fetchPostAndComments()
+    this.props.match && 
+    this.props.match.params.id && this.setState({showComments: true})
   }
   render() {
-    console.log(this.state);
-    const { showComments } = this.props
     const { post } = this.state
     return (
       <div>
@@ -123,22 +128,15 @@ class Post extends Component {
           <CommentForm handleSubmit={this.handleCommentSubmit}/>
         }
         { this.state.showComments &&
-          this.state.comments.map((comment)=> <Comment vote={this.voteComment}del={this.deleteComment} handleSubmit={this.handleCommentEdit} comment={comment}/>)
+          this.state.comments.map((comment)=> <Comment key={comment.id} vote={this.voteComment}del={this.deleteComment} handleSubmit={this.handleCommentEdit} comment={comment}/>)
         }
       </div>
     )
   }
 }
-
 const mapStateToProps = (state) => (
   {
     postOrder: state.postOrder
   }
 )
-const mapDispatchToProps = (dispatch) => (
-  {
-    fetchPosts: (key)=> dispatch(fetchPostsOrdered(key)),
-    votePost: (id, vote)=> dispatch(votePostAction(id, {option: vote}))
-  }
-)
-export default connect(mapStateToProps, mapDispatchToProps)(Post)
+export default connect(mapStateToProps)(Post)

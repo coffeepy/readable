@@ -2,21 +2,20 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Nav from './Nav'
 import Post from './Post'
+import SelectOrder from './SelectOrder'
 
 class CategoryView extends Component {
   render (){
-    const { posts, selectedCat } = this.props
-    console.log(this.props);
+    let { posts, selectedCat } = this.props
+    posts = posts.filter((post)=> post.category === selectedCat)
     return(
-      // <Nav><button>Add Post</button></Nav>
       <div>
+        <SelectOrder />
         <h2>Category View</h2>
         {
-          posts.map((post)=>{
-            return post.category === selectedCat ? <Post post={post}/>
-              : <div>No Posts in this Category</div>
-          })
-
+          posts.length
+          ? posts.map((post)=> <Post key={post.id} id={post.id} fetchPosts={true}/> )
+          : <div>Nothing in this Category</div>
         }
       </div>
 
