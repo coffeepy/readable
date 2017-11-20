@@ -6,7 +6,7 @@ import Comment from './Comment'
 import { deletePostAction, votePostAction } from '../actions/posts'
 import {serializeForm_with_timestamp_and_id} from '../utils/helpers'
 import { getComments, postComment, editComment, deleteComment } from '../backendAPI'
-import { fetchPosts } from '../actions/posts'
+import { fetchPostsOrdered } from '../actions/posts'
 import { serialize_form } from '../utils/helpers'
 
 class Post extends Component {
@@ -20,7 +20,7 @@ class Post extends Component {
     let obj = serializeForm_with_timestamp_and_id(e)
     obj.parentId = this.props.post.id
     postComment(obj).then(()=> this.fetchComments(true) )
-    this.props.dispatch(fetchPosts())
+    this.props.fetchPosts(this.props.postOrder)
     this.toggleShowCommentForm()
   }
   handleCommentEdit = (e, id)=> {
@@ -33,7 +33,7 @@ class Post extends Component {
   }
   deleteComment = (id)=> {
     deleteComment(id).then(()=> this.fetchComments(true) )
-    this.props.dispatch(fetchPosts())
+    this.props.fetchPosts(this.props.postOrder)
   }
   toggleShowCommentForm = ()=> {
     this.setState((state) => {
@@ -46,23 +46,26 @@ class Post extends Component {
     let { showComments } = this.state
     showComments = showComments ? false : true
     this.setState({showComments})
+    return showComments
+  }
+  toggleCommentsThenFetch = ()=> {
+    const showComments = this.toggleShowComments()
+    console.log(showComments);
+    if (showComments) {
+      this.fetchComments()
+    }
   }
   vote = (id, vote)=> {
     this.props.dispatch(votePostAction(id, {option: vote}))
   }
-  fetchComments(showComments) {
-    console.log('launched ');
+  fetchComments() {
     getComments(this.props.post.id)
       .then((comments)=> {
-        this.setState({comments, showComments: this.props.showComments || showComments })
+        this.setState({comments})
       })
   }
-  componentDidMount() {
-    console.log('component mounted');
-    this.fetchComments()
-  }
   render() {
-    const { post } = this.props
+    const { post, showComments } = this.props
     return (
       <div>
         <ul>
@@ -75,7 +78,7 @@ class Post extends Component {
         <button onClick={this.toggleShowCommentForm}>Add Comment</button>
         <button onClick={()=> this.vote(post.id, 'upVote')}>Up Vote</button>
         <button onClick={()=> this.vote(post.id, 'downVote')}>Down Vote</button>
-        <button onClick={this.toggleShowComments}>Show Comments</button>
+        <button onClick={this.toggleCommentsThenFetch}>Show Comments</button>
         { this.state.showCommentForm &&
           <CommentForm handleSubmit={this.handleCommentSubmit}/>
         }
@@ -87,4 +90,14 @@ class Post extends Component {
   }
 }
 
-export default connect()(Post)
+const mapStateToProps = (state) => (
+  {
+    postOrder: state.postOrder
+  }
+)
+const mapDispatchToProps = (dispatch) => (
+  {
+    fetchPosts: (key)=> dispatch(fetchPostsOrdered(key))
+  }
+)
+export default connect(mapStateToProps, mapDispatchToProps)(Post)

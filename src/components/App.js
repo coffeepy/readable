@@ -10,9 +10,10 @@ import Nav from './Nav'
 import CategoryView from './CategoryView'
 import NewPostForm from './NewPostForm'
 import EditPostForm from './EditPostForm'
+import SelectOrder from './SelectOrder'
 
 // fetchposts/fetchCats are asynchronous calls, gets all posts from backend
-import { fetchPosts } from '../actions/posts'
+import { fetchPostsOrdered } from '../actions/posts'
 import { fetchCats } from '../actions/categories'
 import { getAllCats, getAllPosts } from '../backendAPI'
 // import { fetchPosts } from '../actions'
@@ -27,15 +28,15 @@ class App extends Component {
   }
   componentDidMount()  {
     // fed in from mapDispatchToProps
-    this.props.fetchPosts()
+    this.props.fetchPosts(this.props.postOrder)
     this.props.fetchCats()
   }
-
   render() {
-    const { posts, cats} = this.props
+    let { posts, cats } = this.props
     return (
       <div>
         <Nav/>
+        <SelectOrder />
         <Route exact={true} path="/" render={()=> {
           return(
             <div>
@@ -75,11 +76,12 @@ const mapStateToProps = (state) => {
   return {
     posts: state.posts,
     cats: state.categories,
+    postOrder: state.postOrder,
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchPosts: () => dispatch(fetchPosts()),
+    fetchPosts: (key) => dispatch(fetchPostsOrdered(key)),
     fetchCats: () => dispatch(fetchCats()),
   }
 }

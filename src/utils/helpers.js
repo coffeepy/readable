@@ -12,3 +12,7 @@ export const serialize_form = (e)=> {
   let obj = serializeForm(e.target, { hash: true })
   return obj
 }
+
+export const orderByGreatest = (arr, key) => (
+  arr.sort((a, b) => a[key] < b[key])
+)

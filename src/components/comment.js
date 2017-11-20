@@ -5,11 +5,6 @@ class Comment extends Component {
   state = {
     edit: false
   }
-  // handleCommentEdit = (e)=> {
-  //   e.preventDefault()
-  //   let obj = serialize_form(e)
-  //   editComment(this.props.comment.id, obj).then(()=> this.setState({edit: false}) )
-  // }
   handleSubmit = (e, id) => {
     this.props.handleSubmit(e, id).then(()=> this.setState({edit:false}))
   }
@@ -28,10 +23,13 @@ class Comment extends Component {
                 <div>
                   {comment.author}
                 </div>
+                <div>{comment.voteScore}</div>
               </div>
         }
         <button onClick={()=>{this.setState({edit: true})}}>Edit</button>
         <button onClick={()=> del(comment.id)} >Delete</button>
+        <button onClick={()=> del(comment.id)} >Up Vote</button>
+        <button onClick={()=> del(comment.id)} >Down Vote</button>
       </div>
     )
   }

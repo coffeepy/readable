@@ -1,14 +1,32 @@
 import { getAllPosts, postPost, editPost, deletePost, votePost } from '../backendAPI'
-// export const ADD_POST = "ADD_POST"
-// export const REMOVE_POST = "REMOVE_POST"
-// export const FETCH_POSTS = "FETCH_POSTS"
+import { orderByGreatest } from '../utils/helpers'
+
 export const RECIEVE_POSTS = "RECIEVE_POSTS"
+export const CHANGE_POST_ORDER = "CHANGE_POST_ORDER"
 
 export const recievePosts = (posts) => {
   return {
     type: RECIEVE_POSTS,
     posts
   }
+}
+
+export const changePostOrder = (postOrder) => {
+  return {
+    type: CHANGE_POST_ORDER,
+    postOrder
+  }
+}
+
+export const fetchPostsOrdered = (key) => dispatch => {
+  console.log('getting called');
+  getAllPosts()
+    .then( (posts)=> {
+      posts = orderByGreatest(posts, key)
+      console.log(posts);
+      console.log(key);
+      return dispatch(recievePosts(posts))
+    })
 }
 export const deletePostAction = (id) => dispatch => {
   // thunk is used to use this action due to it being asynchronous
