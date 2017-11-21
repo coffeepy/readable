@@ -10,15 +10,15 @@ import CategoryView from './CategoryView'
 import NewPostForm from './NewPostForm'
 import EditPostForm from './EditPostForm'
 import SelectOrder from './SelectOrder'
+
+// style Imports
 import { Container, Row, Col } from 'reactstrap'
 import Divider from 'material-ui/Divider'
 
 // fetchposts/fetchCats are asynchronous calls, gets all posts from backend
 import { fetchPostsOrdered } from '../actions/posts'
 import { fetchCats } from '../actions/categories'
-import { getAllCats, getAllPosts } from '../backendAPI'
-
-window.getAllPosts = getAllPosts
+import { getAllPosts } from '../backendAPI'
 
 class App extends Component {
   state = {
@@ -30,7 +30,7 @@ class App extends Component {
     this.props.fetchCats()
   }
   render() {
-    let { posts, cats } = this.props
+    const { posts, cats } = this.props
     return (
       <Container fluid={true}>
         <Route exact={true} path="/" render={()=> {
@@ -59,20 +59,23 @@ class App extends Component {
         }}/>
         <Route path="/new" component={NewPostForm}/>
         <Route path="/edit/:id" component={EditPostForm}/>
-        {/* <Route path="/post/:id"
-          render={({ match })=> {
-            const post = posts.find((post)=> post.id === match.params.id)
-            return <Post post={post} />
-          }}
-        /> */}
         <Route path="/post/:id" component={Post}/>
-        {/*  Below we create a Route for every possible cat */}
+        {/*  Below we create a Route for every possible category */}
         {
-          cats.map((cat)=> <Route key={cat.path} path={`/${cat.path}`} render={()=> <CategoryView selectedCat={cat.name}/>}/>)
+          cats.map((cat)=>
+            <Route
+              key={cat.path}
+              path={`/${cat.path}`}
+              render={()=>
+                <CategoryView selectedCat={cat.name}/>
+              }
+              />
+          )
         }
+        {/* div to add some scroll room to the site */}
         <div className="scrollRoom"></div>
       </Container>
-    );
+    )
   }
 }
 const mapStateToProps = (state) => {

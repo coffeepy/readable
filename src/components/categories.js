@@ -8,7 +8,7 @@ class Categories extends Component {
     return (
       <div>
         {
-          this.props.cats.map((cat)=> <Category cat={cat} />)
+          this.props.cats.map((cat)=> <Category key={cat.name} cat={cat} />)
         }
       </div>
     );

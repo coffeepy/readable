@@ -19,6 +19,7 @@ export const changePostOrder = (postOrder) => {
 }
 
 export const fetchPostsOrdered = (key) => dispatch => (
+  // this will return posts in the order selected by the user(voteScore or Date)
   getAllPosts()
     .then( (posts)=> {
       posts = orderByGreatest(posts, key)
@@ -26,33 +27,28 @@ export const fetchPostsOrdered = (key) => dispatch => (
     })
 )
 export const deletePostAction = (id) => dispatch => (
-  // thunk is used to use this action due to it being asynchronous
-  // Here i  just post the obj, then i want to fetch all posts again to update
-  // the state
+  // Just what it sounds like, deletes a post, then fetches the posts again
   deletePost(id)
     .then( ()=>  dispatch(fetchPosts()) )
 )
 
 export const addPost = (post_obj) => dispatch => (
-  // thunk is used to use this action due to it being asynchronous
   // Here i  just post the obj, then i want to fetch all posts again to update
-  // the state
   postPost(post_obj)
     .then( ()=>  dispatch(fetchPosts()) )
 )
 export const editPostAction = (id, post_obj) => dispatch => (
-  // thunk is used to use this action due to it being asynchronous
   // Here i  just edit the post, then i want to fetch all posts again to update
   // the state
   editPost(id, post_obj)
     .then( ()=>  dispatch(fetchPosts()) )
 )
 export const votePostAction = (id, data) => dispatch => (
+  // add a vote
   votePost(id, data)
     .then( ()=> dispatch(fetchPosts()))
 )
 export const fetchPosts = () => dispatch => (
-  // thunk is used to use this action due to it being asynchronous
   //Fetch posts from the server, and when returned dispatch an action
   getAllPosts()
     .then( (posts)=>  dispatch(recievePosts(posts)) )
