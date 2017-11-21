@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { getComment } from '../backendAPI'
 
 class CommentForm extends Component {

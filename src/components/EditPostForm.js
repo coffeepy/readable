@@ -20,10 +20,9 @@ class EditPostForm extends Component {
     )
   }
   render() {
-    const { match, posts} = this.props
+    const { match } = this.props
     return (
       <Container>
-        <Nav/>
         {
           this.state.submitted
             ? <Redirect to={`/${this.state.category}`}/>
@@ -38,11 +37,6 @@ class EditPostForm extends Component {
 }
 
 
-const mapStateToProps = (state)=> {
-  return {
-    posts: state.posts
-  }
-}
 const mapDispatchToProps = (dispatch, props)=> {
   return {
     handleSubmit: (e)=> {
@@ -52,4 +46,4 @@ const mapDispatchToProps = (dispatch, props)=> {
     }
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(EditPostForm)
+export default connect(null, mapDispatchToProps)(EditPostForm)
