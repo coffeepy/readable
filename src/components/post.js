@@ -168,7 +168,7 @@ class Post extends Component {
         </CardText>
         <CardActions>
           <IconButton  onClick={this.toggleShowCommentForm}><AddComment/></IconButton>
-          <Badge badgeContent={post.commentCount} primary={true}>
+          <Badge badgeContent={post.commentCount || 0} primary={true}>
             <IconButton tooltip="Show Comments" onClick={this.toggleShowComments}><Forum /></IconButton>
           </Badge>
         </CardActions>
