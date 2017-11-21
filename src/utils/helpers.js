@@ -1,5 +1,6 @@
 import serializeForm from 'form-serialize'
 import uniqid from 'uniqid'
+import date from 'date-and-time'
 
 export const serializeForm_with_timestamp_and_id = (e)=> {
     let obj = serialize_form(e)
@@ -15,4 +16,8 @@ export const serialize_form = (e)=> {
 
 export const orderByGreatest = (arr, key) => (
   arr.sort((a, b) => a[key] < b[key])
+)
+
+export const convertEpochDate = (epochDate) => (
+  date.format(new Date(epochDate), "MM/DD/YYYY hh:mm:ss")
 )

@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "bootstrap": "4.0.0-beta.2",
+    "date-and-time": "^0.5.0",
     "form-serialize": "^0.7.2",
+    "material-ui": "^0.19.4",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",

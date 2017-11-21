@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { serialize_form } from '../utils/helpers'
 import { editPostAction } from  '../actions/posts'
 import PostForm from './PostForm'
+import Nav from './Nav'
 
 class EditPostForm extends Component {
   state = {
@@ -22,6 +23,7 @@ class EditPostForm extends Component {
     const { match, posts} = this.props
     return (
       <Container>
+        <Nav/>
         {
           this.state.submitted
             ? <Redirect to={`/${this.state.category}`}/>

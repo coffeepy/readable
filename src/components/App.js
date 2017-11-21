@@ -10,11 +10,14 @@ import CategoryView from './CategoryView'
 import NewPostForm from './NewPostForm'
 import EditPostForm from './EditPostForm'
 import SelectOrder from './SelectOrder'
+import { Container, Row, Col } from 'reactstrap'
+import Divider from 'material-ui/Divider'
 
 // fetchposts/fetchCats are asynchronous calls, gets all posts from backend
 import { fetchPostsOrdered } from '../actions/posts'
 import { fetchCats } from '../actions/categories'
 import { getAllCats, getAllPosts } from '../backendAPI'
+
 window.getAllPosts = getAllPosts
 
 class App extends Component {
@@ -29,18 +32,28 @@ class App extends Component {
   render() {
     let { posts, cats } = this.props
     return (
-      <div>
+      <Container fluid={true}>
         <Route exact={true} path="/" render={()=> {
           return(
             <div>
               <Nav />
-              <SelectOrder />
-              <h3>Categories</h3>
-              <Categories cats={cats}/>
-              <h3>Posts</h3>
-              {
-                posts.map((post)=> <Post key={post.id} id={post.id} fetchPosts={true}/>)
-              }
+              <Row>
+                <Col>
+                  <h3 className="header">Categories</h3>
+                  <Categories cats={cats}/>
+                  <Divider />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <h3 className="header">Posts</h3>
+                  <SelectOrder />
+                  {
+                    posts.map((post)=> <Post key={post.id} id={post.id} fetchPosts={true}/>)
+                  }
+                </Col>
+
+              </Row>
             </div>
           )
         }}/>
@@ -57,7 +70,8 @@ class App extends Component {
         {
           cats.map((cat)=> <Route key={cat.path} path={`/${cat.path}`} render={()=> <CategoryView selectedCat={cat.name}/>}/>)
         }
-      </div>
+        <div className="scrollRoom"></div>
+      </Container>
     );
   }
 }

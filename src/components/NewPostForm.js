@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { addPost } from '../actions/posts'
 import { serializeForm_with_timestamp_and_id } from '../utils/helpers'
 import PostForm from './PostForm'
+import Nav from './Nav'
 
 class NewPostForm extends Component {
   state = {

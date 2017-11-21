@@ -7,7 +7,26 @@ import { fetchPostsOrdered, deletePostAction, votePostAction } from '../actions/
 import {serializeForm_with_timestamp_and_id} from '../utils/helpers'
 import { getComments, getPost, votePost, postComment, editComment, deleteComment, voteComment } from '../backendAPI'
 import { serialize_form, orderByGreatest } from '../utils/helpers'
-
+import { convertEpochDate } from '../utils/helpers'
+import Category from './Category'
+//styling
+import { Card, CardHeader, CardText, CardActions, CardTitle } from 'material-ui/Card'
+import FlatButton from 'material-ui/FlatButton'
+import IconButton from 'material-ui/IconButton'
+import Clear from 'material-ui/svg-icons/content/clear'
+import Chip from 'material-ui/Chip'
+import Avatar from 'material-ui/Avatar'
+import Face from 'material-ui/svg-icons/action/face'
+import OpenInNew from 'material-ui/svg-icons/action/open-in-new'
+import ThumbUp from 'material-ui/svg-icons/action/thumb-up'
+import ThumbDown from 'material-ui/svg-icons/action/thumb-down'
+import Forum from 'material-ui/svg-icons/communication/forum'
+import AddComment from 'material-ui/svg-icons/communication/comment'
+import Badge from 'material-ui/Badge'
+import Divider from 'material-ui/Divider'
+import { List } from 'material-ui/List'
+import IconMenu from 'material-ui/IconMenu'
+import {Toolbar, ToolbarTitle, ToolbarGroup} from 'material-ui/Toolbar'
 
 class Post extends Component {
   state = {
@@ -102,41 +121,98 @@ class Post extends Component {
     ? this.fetchAllPosts()
     : null
   )
-
   componentDidMount() {
     this.fetchPostAndComments()
-    this.props.match && 
-    this.props.match.params.id && this.setState({showComments: true})
+
+    this.props.match &&
+    this.props.match.params.id &&
+    this.setState({showComments: true})
   }
   render() {
     const { post } = this.state
+    const { categories } = this.props
+    const cat = categories.find((cat)=> post.category === cat.name)
     return (
-      <div>
-        <ul>
+      <Card>
+        <Toolbar>
+          <ToolbarGroup>
+            {
+              cat && <Category cat={cat}/>
+            }
+            <Chip backgroundColor="#F44336" labelColor="white">
+              <Avatar icon={<Face/>}/>
+              {post.author}
+            </Chip>
+            <IconButton onClick={()=> this.votePost(post.id, 'upVote')} tooltip="Up Vote">
+              <ThumbUp />
+            </IconButton>
+            <span>{post.voteScore}</span>
+            <IconButton onClick={()=> this.votePost(post.id, 'downVote')} tooltip="Down Vote">
+              <ThumbDown/>
+            </IconButton>
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <Link to={`/edit/${post.id}`}>Edit Post</Link>
+            <Link to={`/post/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
+            <IconButton onClick={()=> this.props.dispatch(deletePostAction(post.id))} tooltip="Delete Post"><Clear ></Clear></IconButton>
+          </ToolbarGroup>
+        </Toolbar>
+
+        <CardHeader
+          subtitle={`@${convertEpochDate(post.timestamp)}`}
+          // openIcon={<Add onClick={()=> this.props.dispatch(deletePostAction(post.id))}></Add>}
+        />
+        <CardTitle title={post.title}/>
+        <CardText>
+          {post.body}
+        </CardText>
+        <CardActions>
+          <IconButton  onClick={this.toggleShowCommentForm}><AddComment/></IconButton>
+          <Badge badgeContent={post.commentCount} primary={true}>
+            <IconButton tooltip="Show Comments" onClick={this.toggleShowComments}><Forum /></IconButton>
+          </Badge>
+        </CardActions>
+        {/* <ul>
            {
             post && Object.entries(post).map((keyval)=> <li key={keyval[0]}>{`${keyval[0]}:${keyval[1]}`}</li>)
            }
-        </ul>
-        <Link to={`/edit/${post.id}`}>Edit Post</Link>
-        <Link to={`/post/${post.id}`}>View Post</Link>
-        <button onClick={()=> this.props.dispatch(deletePostAction(post.id))}>Delete Post</button>
-        <button onClick={this.toggleShowCommentForm}>Add Comment</button>
-        <button onClick={()=> this.votePost(post.id, 'upVote')}>Up Vote</button>
-        <button onClick={()=> this.votePost(post.id, 'downVote')}>Down Vote</button>
-        <button onClick={this.toggleShowComments}>Show Comments</button>
+        </ul> */}
+        <Divider/>
         { this.state.showCommentForm &&
           <CommentForm handleSubmit={this.handleCommentSubmit}/>
         }
         { this.state.showComments &&
-          this.state.comments.map((comment)=> <Comment key={comment.id} vote={this.voteComment}del={this.deleteComment} handleSubmit={this.handleCommentEdit} comment={comment}/>)
+          <List>
+            {
+
+              this.state.comments.map((comment)=>
+                  <div>
+                    <Comment
+                      key={comment.id}
+                      vote={this.voteComment}
+                      del={this.deleteComment}
+                      handleSubmit={this.handleCommentEdit}
+                      comment={comment}
+                    />
+                    <Divider />
+                  </div>
+
+              )
+            }
+
+
+          </List>
         }
-      </div>
+
+      </Card>
+
     )
   }
 }
 const mapStateToProps = (state) => (
   {
-    postOrder: state.postOrder
+    postOrder: state.postOrder,
+    categories: state.categories,
   }
 )
 export default connect(mapStateToProps)(Post)

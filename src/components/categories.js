@@ -1,18 +1,15 @@
 import React, { Component } from 'react'
-import { Link, Route } from 'react-router-dom'
 import { getAllCats } from '../backendAPI'
-
+import Category from './Category'
 // Categories component used on main page for choosing what categorie you want to view
 class Categories extends Component {
   // componentDidMount()
   render() {
     return (
       <div>
-        <ul>
-          {
-            this.props.cats.map((cat)=> <li key={cat.path}><Link to={`/${cat.path}`}>{cat.name}</Link></li>)
-          }
-        </ul>
+        {
+          this.props.cats.map((cat)=> <Category cat={cat} />)
+        }
       </div>
     );
   }

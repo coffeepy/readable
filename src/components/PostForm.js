@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { getPost } from '../backendAPI'
-
+import Nav from './Nav'
 class PostForm extends Component {
   constructor(props) {
     super(props);
@@ -30,43 +30,46 @@ class PostForm extends Component {
     const { categories, handleSubmit, id} = this.props
     const { title, body, author, category } = this.state
     return (
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label for="title">Title</Label>
-            <Input name="title" value={title} onChange={this.onChangeHandler}/>
-          </FormGroup>
-          <FormGroup>
-            <Label for="title">Body</Label>
-            <Input type="textarea" name="body" value={body} onChange={this.onChangeHandler}/>
-          </FormGroup>
-          <FormGroup>
-            <Label for="author" >Author</Label>
-            {
-              id ?
-                <div>{author}</div>
-              : <Input name="author" value={author} onChange={this.onChangeHandler}/>
-            }
+        <Container>
+          <Nav hideNewBtn={true}/>
+          <Form onSubmit={handleSubmit}>
+            <FormGroup>
+              <Label for="title">Title</Label>
+              <Input name="title" value={title} onChange={this.onChangeHandler}/>
+            </FormGroup>
+            <FormGroup>
+              <Label for="title">Body</Label>
+              <Input type="textarea" name="body" value={body} onChange={this.onChangeHandler}/>
+            </FormGroup>
+            <FormGroup>
+              <Label for="author" >Author</Label>
+              {
+                id ?
+                  <div>{author}</div>
+                : <Input name="author" value={author} onChange={this.onChangeHandler}/>
+              }
 
-          </FormGroup>
-          <FormGroup>
-            <Label for="category">Category</Label>
-            {
-              id
-                ? <div>{category}</div>
+            </FormGroup>
+            <FormGroup>
+              <Label for="category">Category</Label>
+              {
+                id
+                  ? <div>{category}</div>
 
-                : <Input type="select" name="category">
-                    {
-                      categories.map((cat)=> <option key={cat.name}>{cat.name}</option>)
+                  : <Input type="select" name="category">
+                      {
+                        categories.map((cat)=> <option key={cat.name}>{cat.name}</option>)
 
-                    }
-                  </Input>
-            }
-          </FormGroup>
-          <Button type="submit">
-            {id ? "Edit " : "Submit "}
-            Post
-          </Button>
-        </Form>
+                      }
+                    </Input>
+              }
+            </FormGroup>
+            <Button type="submit">
+              {id ? "Edit " : "Submit "}
+              Post
+            </Button>
+          </Form>
+        </Container>
     )
   }
 }

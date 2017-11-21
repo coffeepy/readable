@@ -28,13 +28,16 @@ class CommentForm extends Component {
     return (
       <Form onSubmit={(e) => handleSubmit(e, id)}>
         <FormGroup>
+          <Label for="author">Comment</Label>
           <Input type='textarea' name='body' value={this.state.body} onChange={this.onChangeHandler}/>
         </FormGroup>
         <FormGroup>
-          <Label for="author">Author</Label>
           {
-            id ? <div>{this.state.author}</div>
-              :  <Input name='author' value={this.state.author} onChange={this.onChangeHandler}/>
+            id ? <div>{`-  ${this.state.author}`}</div>
+              : <div>
+                  <Label for="author">Author</Label>
+                  <Input name='author' value={this.state.author} onChange={this.onChangeHandler}/>
+                </div>
           }
 
         </FormGroup>

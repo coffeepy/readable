@@ -10,12 +10,13 @@ class CategoryView extends Component {
     posts = posts.filter((post)=> post.category === selectedCat)
     return(
       <div>
+        <Nav/>
         <SelectOrder />
-        <h2>Category View</h2>
+        <h2>{selectedCat}</h2>
         {
           posts.length
           ? posts.map((post)=> <Post key={post.id} id={post.id} fetchPosts={true}/> )
-          : <div>Nothing in this Category</div>
+          : <div>Not Posts in this Category</div>
         }
       </div>
 
