@@ -17,6 +17,9 @@ class Comment extends Component {
   handleSubmit = (e, id) => {
     this.props.handleSubmit(e, id).then(()=> this.setState({edit:false}))
   }
+  handleCancel = ()=> {
+    this.setState({edit:false})
+  }
   render() {
     const { del, comment, handleSubmit, vote} = this.props
     const { edit } = this.state
@@ -24,7 +27,7 @@ class Comment extends Component {
       <div>
         {
           edit
-            ? <CommentForm id={comment.id} handleSubmit={this.handleSubmit}/>
+            ? <CommentForm id={comment.id} handleCancel={this.handleCancel} handleSubmit={this.handleSubmit}/>
             : <ListItem
                 leftIcon={
                   <IconMenu

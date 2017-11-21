@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { Container, Form, FormGroup, Label, Input } from 'reactstrap'
-import FlatButton from 'material-ui/FlatButton'
 import { getPost } from '../backendAPI'
 import Nav from './Nav'
+import FormButtons from './FormButtons'
 
 class PostForm extends Component {
   constructor(props) {
@@ -67,12 +66,7 @@ class PostForm extends Component {
                     </Input>
               }
             </FormGroup>
-            <FlatButton label= {id ? "Edit Post" : "Submit Post" }
-              hoverColor="#90CAF9"
-              type="submit"
-              >
-            </FlatButton>
-            <Link to="/"><FlatButton label="Cancel" hoverColor="#FF8A80"></FlatButton></Link>
+            <FormButtons id={id} formType="Post"/>
           </Form>
         </Container>
     )

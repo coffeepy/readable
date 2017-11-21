@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { Form, FormGroup, Label, Input } from 'reactstrap'
 import { getComment } from '../backendAPI'
+import FormButtons from './FormButtons'
 
 class CommentForm extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class CommentForm extends Component {
     }
   }
   render() {
-    const { id, handleSubmit } = this.props
+    const { id, handleSubmit, handleCancel } = this.props
     return (
       <Form onSubmit={(e) => handleSubmit(e, id)}>
         <FormGroup>
@@ -41,10 +42,7 @@ class CommentForm extends Component {
           }
 
         </FormGroup>
-          <Button type="submit">
-            {id ? "Edit " : "Submit "}
-            Comment
-          </Button>
+        <FormButtons id={id} formType="Comment" handleCancel={handleCancel}/>
       </Form>
     )
   }
