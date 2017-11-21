@@ -154,7 +154,7 @@ class Post extends Component {
             </ToolbarGroup>
             <ToolbarGroup>
               <Link to={`/edit/${post.id}`}>Edit Post</Link>
-              <Link to={`/post/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
+              <Link to={`/${post.category}/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
               <IconButton onClick={()=> this.props.dispatch(deletePostAction(post.id))} tooltip="Delete Post"><Clear ></Clear></IconButton>
             </ToolbarGroup>
           </Toolbar>

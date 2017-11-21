@@ -59,13 +59,13 @@ class App extends Component {
         }}/>
         <Route path="/new" component={NewPostForm}/>
         <Route path="/edit/:id" component={EditPostForm}/>
-        <Route path="/post/:id" component={Post}/>
+        <Route path="/:category/:id" component={Post}/>
         {/*  Below we create a Route for every possible category */}
         {
           cats.map((cat)=>
             <Route
               key={cat.path}
-              path={`/${cat.path}`}
+              exact path={`/${cat.path}`}
               render={()=>
                 <CategoryView selectedCat={cat.name}/>
               }
