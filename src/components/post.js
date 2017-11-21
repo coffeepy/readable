@@ -186,9 +186,8 @@ class Post extends Component {
             {
 
               this.state.comments.map((comment)=>
-                  <div>
+                  <div key={comment.id}>
                     <Comment
-                      key={comment.id}
                       vote={this.voteComment}
                       del={this.deleteComment}
                       handleSubmit={this.handleCommentEdit}
