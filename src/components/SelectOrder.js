@@ -5,7 +5,7 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 class SelectOrder extends Component {
   render() {
-    const { postOrder, changePostOrder } = this.props
+    const { postOrder } = this.props
     const onChange = (e,idx,val)=> {
       this.props.changePostOrder(val)
       this.props.fetchPostOrdered(val)
