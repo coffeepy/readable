@@ -18,8 +18,8 @@ using React(create-react-app) and other libraries  mostly for styling and helpfu
 
 2. Follow the ReadMe for Backend Server, mainly you navigate to the directory containing
   the cloned repo and then:
-    - npm install
-    - node server
+    - `npm install`
+    - `node server`
 
 3. Clone or fork this repo and then
 
