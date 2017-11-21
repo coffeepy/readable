@@ -20,7 +20,7 @@ class Nav extends Component {
           </IconButton>
         }
         iconElementRight={
-          ! hideNewBtn &&
+          ! hideNewBtn ?
           <Link  to="/new" className="red">
             <FloatingActionButton
               mini={true}
@@ -30,6 +30,7 @@ class Nav extends Component {
               <Add style={{fill:"red"}} />
             </FloatingActionButton>
           </Link>
+          : <div></div>
         }
         title={<Link style={{color:"white"}} to="/">Readable</Link>}
         style={
