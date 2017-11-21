@@ -2,16 +2,14 @@ import React, { Component } from 'react'
 import CommentForm from './CommentForm'
 import { ListItem } from 'material-ui/List'
 import Avatar from 'material-ui/Avatar'
-import PersonPin from 'material-ui/svg-icons/maps/person-pin'
 import ThumbUp from 'material-ui/svg-icons/action/thumb-up'
 import ThumbDown from 'material-ui/svg-icons/action/thumb-down'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
-import Divider from "material-ui/Divider"
-import DropDownMenu from 'material-ui/DropDownMenu'
 import IconMenu from 'material-ui/IconMenu'
 import IconButton from 'material-ui/IconButton'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 import MenuItem from 'material-ui/MenuItem'
+
 class Comment extends Component {
   state = {
     edit: false
