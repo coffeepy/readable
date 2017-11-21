@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { getPost } from '../backendAPI'
 import Nav from './Nav'
+
 class PostForm extends Component {
   constructor(props) {
     super(props);
