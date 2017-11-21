@@ -180,7 +180,7 @@ class Post extends Component {
           </ul> */}
           <Divider/>
           { this.state.showCommentForm &&
-            <CommentForm handleSubmit={this.handleCommentSubmit}/>
+            <CommentForm handleCancel={this.toggleShowCommentForm} handleSubmit={this.handleCommentSubmit}/>
           }
           { this.state.showComments &&
             <List>
