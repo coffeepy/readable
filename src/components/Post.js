@@ -14,6 +14,7 @@ import Nav from './Nav'
 import { Card, CardHeader, CardText, CardActions, CardTitle } from 'material-ui/Card'
 import IconButton from 'material-ui/IconButton'
 import Clear from 'material-ui/svg-icons/content/clear'
+import Meh from 'material-ui/svg-icons/social/sentiment-dissatisfied'
 import Chip from 'material-ui/Chip'
 import Avatar from 'material-ui/Avatar'
 import Face from 'material-ui/svg-icons/action/face'
@@ -131,82 +132,89 @@ class Post extends Component {
     const { post, showNav  } = this.state
     const { categories } = this.props
     const cat = categories.find((cat)=> post.category === cat.name)
+    console.log('post', post);
     return (
-      <div>
-        {showNav && <Nav/>}
-        <Card>
-          <Toolbar>
-            <ToolbarGroup>
-              {
-                cat && <Category cat={cat}/>
+
+      post.id
+        ? <div>
+            {showNav && <Nav/>}
+            <Card>
+              <Toolbar>
+                <ToolbarGroup>
+                  {
+                    cat && <Category cat={cat}/>
+                  }
+                  <Chip backgroundColor="#F44336" labelColor="white">
+                    <Avatar icon={<Face/>}/>
+                    {post.author}
+                  </Chip>
+                  <IconButton onClick={()=> this.votePost(post.id, 'upVote')} tooltip="Up Vote">
+                    <ThumbUp />
+                  </IconButton>
+                  <span>{post.voteScore}</span>
+                  <IconButton onClick={()=> this.votePost(post.id, 'downVote')} tooltip="Down Vote">
+                    <ThumbDown/>
+                  </IconButton>
+                </ToolbarGroup>
+                <ToolbarGroup>
+                  <Link to={`/edit/post/${post.id}`}>Edit Post</Link>
+                  <Link to={`/${post.category}/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
+                  <IconButton onClick={()=> this.props.dispatch(deletePostAction(post.id))} tooltip="Delete Post"><Clear ></Clear></IconButton>
+                </ToolbarGroup>
+              </Toolbar>
+
+              <CardHeader
+                subtitle={`@${convertEpochDate(post.timestamp)}`}
+                // openIcon={<Add onClick={()=> this.props.dispatch(deletePostAction(post.id))}></Add>}
+              />
+              <CardTitle title={post.title}/>
+              <CardText>
+                {post.body}
+              </CardText>
+              <CardActions>
+                <IconButton  onClick={this.toggleShowCommentForm}><AddComment/></IconButton>
+                <Badge badgeContent={post.commentCount || 0} primary={true}>
+                  <IconButton tooltip="Show Comments" onClick={this.toggleShowComments}><Forum /></IconButton>
+                </Badge>
+              </CardActions>
+              {/* <ul>
+                 {
+                  post && Object.entries(post).map((keyval)=> <li key={keyval[0]}>{`${keyval[0]}:${keyval[1]}`}</li>)
+                 }
+              </ul> */}
+              <Divider/>
+              { this.state.showCommentForm &&
+                <CommentForm handleCancel={this.toggleShowCommentForm} handleSubmit={this.handleCommentSubmit}/>
               }
-              <Chip backgroundColor="#F44336" labelColor="white">
-                <Avatar icon={<Face/>}/>
-                {post.author}
-              </Chip>
-              <IconButton onClick={()=> this.votePost(post.id, 'upVote')} tooltip="Up Vote">
-                <ThumbUp />
-              </IconButton>
-              <span>{post.voteScore}</span>
-              <IconButton onClick={()=> this.votePost(post.id, 'downVote')} tooltip="Down Vote">
-                <ThumbDown/>
-              </IconButton>
-            </ToolbarGroup>
-            <ToolbarGroup>
-              <Link to={`/edit/${post.id}`}>Edit Post</Link>
-              <Link to={`/${post.category}/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
-              <IconButton onClick={()=> this.props.dispatch(deletePostAction(post.id))} tooltip="Delete Post"><Clear ></Clear></IconButton>
-            </ToolbarGroup>
-          </Toolbar>
+              { this.state.showComments &&
+                <List>
+                  {
 
-          <CardHeader
-            subtitle={`@${convertEpochDate(post.timestamp)}`}
-            // openIcon={<Add onClick={()=> this.props.dispatch(deletePostAction(post.id))}></Add>}
-          />
-          <CardTitle title={post.title}/>
-          <CardText>
-            {post.body}
-          </CardText>
-          <CardActions>
-            <IconButton  onClick={this.toggleShowCommentForm}><AddComment/></IconButton>
-            <Badge badgeContent={post.commentCount || 0} primary={true}>
-              <IconButton tooltip="Show Comments" onClick={this.toggleShowComments}><Forum /></IconButton>
-            </Badge>
-          </CardActions>
-          {/* <ul>
-             {
-              post && Object.entries(post).map((keyval)=> <li key={keyval[0]}>{`${keyval[0]}:${keyval[1]}`}</li>)
-             }
-          </ul> */}
-          <Divider/>
-          { this.state.showCommentForm &&
-            <CommentForm handleCancel={this.toggleShowCommentForm} handleSubmit={this.handleCommentSubmit}/>
-          }
-          { this.state.showComments &&
-            <List>
-              {
+                    this.state.comments.map((comment)=>
+                        <div key={comment.id}>
+                          <Comment
+                            vote={this.voteComment}
+                            del={this.deleteComment}
+                            handleSubmit={this.handleCommentEdit}
+                            comment={comment}
+                          />
+                          <Divider />
+                        </div>
 
-                this.state.comments.map((comment)=>
-                    <div key={comment.id}>
-                      <Comment
-                        vote={this.voteComment}
-                        del={this.deleteComment}
-                        handleSubmit={this.handleCommentEdit}
-                        comment={comment}
-                      />
-                      <Divider />
-                    </div>
+                    )
+                  }
 
-                )
+
+                </List>
               }
 
+            </Card>
 
-            </List>
-          }
-
-        </Card>
-
-      </div>
+          </div>
+        : <div>
+            <Nav />
+            <h3 class="post-not-found"><Meh />UHOH! We cant find this Post! Sorry!! </h3>
+          </div>
 
     )
   }

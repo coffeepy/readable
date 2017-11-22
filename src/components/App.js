@@ -57,9 +57,9 @@ class App extends Component {
             </div>
           )
         }}/>
-        <Route path="/new" component={NewPostForm}/>
-        <Route path="/edit/:id" component={EditPostForm}/>
-        <Route path="/:category/:id" component={Post}/>
+        <Route exact path="/new" component={NewPostForm}/>
+        <Route exact path="/edit/post/:id" component={EditPostForm}/>
+        <Route exact path="/:category/:id" component={Post}/>
         {/*  Below we create a Route for every possible category */}
         {
           cats.map((cat)=>

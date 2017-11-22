@@ -15,7 +15,6 @@ body {
 .commentMenu {
   margin-top: -3px !important;
 }
-.red > * {
-  background: red !important;
-  color: red !important;
+.post-not-found {
+  margin-top: 60px;
 }
