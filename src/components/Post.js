@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import CommentForm from './CommentForm'
 import Comment from './Comment'
 import { fetchPostsOrdered, deletePostAction } from '../actions/posts'
@@ -10,6 +10,7 @@ import { serialize_form, orderByGreatest } from '../utils/helpers'
 import { convertEpochDate } from '../utils/helpers'
 import Category from './Category'
 import Nav from './Nav'
+import Post404 from './Post404'
 //styling
 import { Card, CardHeader, CardText, CardActions, CardTitle } from 'material-ui/Card'
 import IconButton from 'material-ui/IconButton'
@@ -34,6 +35,7 @@ class Post extends Component {
     showCommentForm: false,
     showNav: false,
     comments: [],
+    deleted: false,
     post: {},
   }
   handleCommentSubmit = (e)=> {
@@ -129,13 +131,13 @@ class Post extends Component {
     this.setState({showComments: true, showNav: true })
   }
   render() {
-    const { post, showNav  } = this.state
+    const { post, showNav, deleted } = this.state
     const { categories } = this.props
     const cat = categories.find((cat)=> post.category === cat.name)
     console.log('post', post);
     return (
-
-      post.id
+      deleted ? <Redirect to="/"/>
+      : post.id
         ? <div>
             {showNav && <Nav/>}
             <Card>
@@ -159,7 +161,16 @@ class Post extends Component {
                 <ToolbarGroup>
                   <Link to={`/edit/post/${post.id}`}>Edit Post</Link>
                   <Link to={`/${post.category}/${post.id}`}><IconButton tooltip="View Post"><OpenInNew/></IconButton></Link>
-                  <IconButton onClick={()=> this.props.dispatch(deletePostAction(post.id))} tooltip="Delete Post"><Clear ></Clear></IconButton>
+
+                  <IconButton
+                    onClick={()=> {
+                      this.props.dispatch(deletePostAction(post.id))
+                      this.setState({deleted: true})
+                    }
+                    }
+                    tooltip="Delete Post">
+                    <Clear ></Clear>
+                  </IconButton>
                 </ToolbarGroup>
               </Toolbar>
 
@@ -211,10 +222,7 @@ class Post extends Component {
             </Card>
 
           </div>
-        : <div>
-            <Nav />
-            <h3 class="post-not-found"><Meh />UHOH! We cant find this Post! Sorry!! </h3>
-          </div>
+        : <Post404 />
 
     )
   }
